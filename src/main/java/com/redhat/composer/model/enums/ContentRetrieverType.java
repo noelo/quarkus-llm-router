@@ -6,7 +6,8 @@ package com.redhat.composer.model.enums;
 public enum ContentRetrieverType {
 
   WEAVIATE("weaviate"),
-  NEO4J("neo4j");
+  NEO4J("neo4j"),
+  ELASTIC("elastic");
 
   private final String type;
 
@@ -20,6 +21,7 @@ public enum ContentRetrieverType {
 
   /**
    * Get the Content Retriever Type from String.
+   * 
    * @param type string representation of the type
    * @return the ContentRetrieverType
    */
@@ -31,5 +33,5 @@ public enum ContentRetrieverType {
     }
     throw new IllegalArgumentException("No constant with type " + type + " found");
   }
-  
+
 }

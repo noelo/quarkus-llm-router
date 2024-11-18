@@ -11,11 +11,13 @@ import com.redhat.composer.model.mongo.RetrieverConnectionEntity;
 import com.redhat.composer.model.mongo.contentretrieverentites.BaseRetrieverConnectionEntity;
 import com.redhat.composer.model.mongo.contentretrieverentites.Neo4jEntity;
 import com.redhat.composer.model.mongo.contentretrieverentites.WeaviateConnectionEntity;
+import com.redhat.composer.model.mongo.contentretrieverentites.ElasticConnectionEntity;
 import com.redhat.composer.model.request.LLMRequest;
 import com.redhat.composer.model.request.RetrieverRequest;
 import com.redhat.composer.model.request.retriever.BaseRetrieverRequest;
 import com.redhat.composer.model.request.retriever.Neo4JRequest;
 import com.redhat.composer.model.request.retriever.WeaviateRequest;
+import com.redhat.composer.model.request.retriever.ElasticRequest;
 
 import jakarta.enterprise.inject.Default;
 
@@ -32,30 +34,32 @@ public interface MapperUtil {
    * Maps a RetrieverRequest to a RetrieverConnectionEntity.
    */
   @Mappings({
-    @Mapping(target = "connectionEntity", source = "baseRetrieverRequest"),
-    @Mapping(target = "id", ignore = true)
+      @Mapping(target = "connectionEntity", source = "baseRetrieverRequest"),
+      @Mapping(target = "id", ignore = true)
   })
   RetrieverConnectionEntity toEntity(RetrieverRequest request);
 
   /**
    * Maps a LLMRequest to a LLMConnectionEntity.
+   * 
    * @param request the LLMRequest to map
    * @return the LLMConnectionEntity
    */
   @Mapping(target = "id", ignore = true)
   LlmConnectionEntity toEntity(LLMRequest request);
 
-
   /**
    * Maps a RetrieverConnectionEntity to a RetrieverRequest.
+   * 
    * @param entity the RetrieverConnectionEntity to map
    * @return the RetrieverRequest
    */
   @Mapping(source = "connectionEntity", target = "baseRetrieverRequest")
   RetrieverRequest toRequest(RetrieverConnectionEntity entity);
-  
+
   /**
    * Maps a LLMConnectionEntity to a LLMRequest.
+   * 
    * @param entity the LLMConnectionEntity to map
    * @return the LLMRequest
    */
@@ -63,6 +67,7 @@ public interface MapperUtil {
 
   /**
    * Maps a BaseRetrieverRequest to a BaseRetrieverConnectionEntity.
+   * 
    * @param request the BaseRetrieverRequest to map
    * @return the BaseRetrieverConnectionEntity
    */
@@ -71,12 +76,14 @@ public interface MapperUtil {
     if (request == null) {
       return null;
     }
-    
+
     switch (ContentRetrieverType.fromString(request.getContentRetrieverType())) {
       case ContentRetrieverType.WEAVIATE:
         return retrieverConnectionMapper.toEntity((WeaviateRequest) request);
       case ContentRetrieverType.NEO4J:
         return retrieverConnectionMapper.toEntity((Neo4JRequest) request);
+      case ContentRetrieverType.ELASTIC:
+        return retrieverConnectionMapper.toEntity((ElasticRequest) request);
       default:
         return null;
     }
@@ -84,12 +91,12 @@ public interface MapperUtil {
 
   /**
    * Maps a BaseRetrieverConnectionEntity to a BaseRetrieverRequest.
-
+   * 
    * @param entity the BaseRetrieverConnectionEntity to map
    * @return the BaseRetrieverRequest
    */
   default BaseRetrieverRequest mapToBaseRequest(BaseRetrieverConnectionEntity entity) {
-    
+
     if (entity == null || entity.getContentRetrieverType() == null) {
       return null;
     }
@@ -99,10 +106,11 @@ public interface MapperUtil {
         return retrieverConnectionMapper.toRequest((WeaviateConnectionEntity) entity);
       case ContentRetrieverType.NEO4J:
         return retrieverConnectionMapper.toRequest((Neo4jEntity) entity);
+      case ContentRetrieverType.ELASTIC:
+        return retrieverConnectionMapper.toRequest((ElasticConnectionEntity) entity);
       default:
         return null;
     }
   }
 
- 
 }

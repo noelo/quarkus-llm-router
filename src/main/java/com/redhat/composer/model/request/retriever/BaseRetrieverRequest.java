@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "contentRetrieverType", visible = true)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = WeaviateRequest.class, name = "weaviate"),
-    @JsonSubTypes.Type(value = Neo4JRequest.class, name = "neo4j")
+    @JsonSubTypes.Type(value = Neo4JRequest.class, name = "neo4j"),
+    @JsonSubTypes.Type(value = ElasticRequest.class, name = "elastic")
 })
 public class BaseRetrieverRequest {
 
   String contentRetrieverType;
-
 
   public BaseRetrieverRequest() {
   }
@@ -37,7 +37,7 @@ public class BaseRetrieverRequest {
   }
 
   @Override
-    public boolean equals(Object o) {
-      return EqualsBuilder.reflectionEquals(this, o);
+  public boolean equals(Object o) {
+    return EqualsBuilder.reflectionEquals(this, o);
   }
 }

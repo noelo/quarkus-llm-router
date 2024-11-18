@@ -1,7 +1,5 @@
 package com.redhat.composer.services;
 
-import org.jboss.logging.Logger;
-
 import com.redhat.composer.config.retriever.embeddingmodel.EmbeddingModelFactory;
 
 import dev.langchain4j.data.embedding.Embedding;
@@ -11,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 /**
- *  This service is mostly for testing embeddings models and their outputs.
+ * This service is mostly for testing embeddings models and their outputs.
  */
 @ApplicationScoped
 public class EmbeddingService {
@@ -21,7 +19,8 @@ public class EmbeddingService {
 
   /**
    * Embeds the given text using the specified embedding model.
-   * @param text the text to embed
+   * 
+   * @param text          the text to embed
    * @param embeddingType the type of embedding model to use
    * @return the embedded text
    */
@@ -30,5 +29,5 @@ public class EmbeddingService {
     Response<Embedding> response = embedding.embed(text);
     return response.content();
   }
-  
+
 }
